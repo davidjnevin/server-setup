@@ -1,0 +1,13 @@
+---
+- name: Ensure /etc/apt/keyrings/ directory exists
+  file:
+    path: /etc/apt/keyrings/
+    state: directory
+    # owner: app_user
+    # group: app_group
+    # mode: '0770'
+
+- name: Ensure Kubernetes apt repository is added
+  ansible.builtin.apt_repository:
+    repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /
+    state: present

@@ -1,0 +1,88 @@
+---
+- name: Update Setup Server
+  hosts: all
+  become: true
+  vars:
+    packages_to_install:
+      - apt-transport-https  # Allows apt to use HTTPS repositories.
+      - base-files  # Core system files for Debian-based systems.
+      - bash  # The GNU Bourne Again SHell.
+      - bsdutils  # Essential utilities from the BSD operating system.
+      - build-essential  # Packages needed for compiling software.
+      - ca-certificates  # Common Certificate Authority certificates.
+      - containerd.io  # Container runtime for Docker and Kubernetes.
+      - curl  # Tool to transfer data with URLs.
+      - dash  # The Debian Almquist SHell, a lightweight shell.
+      - diffutils  # Tools for comparing files.
+      - docker-buildx-plugin  # Docker plugin to build multi-platform images.
+      - docker-ce  # Docker Community Edition.
+      - docker-ce-cli  # Docker command-line interface.
+      - docker-compose-plugin  # Docker Compose plugin.
+      - findutils  # Utilities to find files.
+      - gnupg  # GNU Privacy Guard for encryption.
+      - grep  # Tool to search text using patterns.
+      - grub-pc  # GRand Unified Bootloader for PC.
+      - gzip  # GNU compression utility.
+      - hostname  # Utility to set/show system hostname.
+      - login  # System login utility.
+      - nala  # Apt frontend with parallel downloads and package history.
+      - ncal  # Display a calendar.
+      - neovim  # Modern text editor.
+      - net-tools  # Basic networking utilities.
+      - openssh-server  # Secure shell server.
+      - tree  # Display directory contents as a tree.
+      # - ubuntu-minimal  # Minimal Ubuntu system.
+      # - ubuntu-server  # Standard Ubuntu server system.
+      # - ubuntu-server-minimal  # Minimal Ubuntu server system.
+      # - ubuntu-standard  # Standard Ubuntu system utilities.
+      - util-linux  # Basic system utilities.
+
+    packages_to_keep_uptodate:
+      - apt-transport-https  # Allows apt to use HTTPS repositories.
+      - base-files  # Core system files for Debian-based systems.
+      - bash  # The GNU Bourne Again SHell.
+      - bsdutils  # Essential utilities from the BSD operating system.
+      - build-essential  # Packages needed for compiling software.
+      - ca-certificates  # Common Certificate Authority certificates.
+      - containerd.io  # Container runtime for Docker and Kubernetes.
+      - curl  # Tool to transfer data with URLs.
+      - dash  # The Debian Almquist SHell, a lightweight shell.
+      - diffutils  # Tools for comparing files.
+      - docker-buildx-plugin  # Docker plugin to build multi-platform images.
+      - docker-ce  # Docker Community Edition.
+      - docker-ce-cli  # Docker command-line interface.
+      - docker-compose-plugin  # Docker Compose plugin.
+      - findutils  # Utilities to find files.
+      - gnupg  # GNU Privacy Guard for encryption.
+      - grep  # Tool to search text using patterns.
+      - grub-pc  # GRand Unified Bootloader for PC.
+      - gzip  # GNU compression utility.
+      - hostname  # Utility to set/show system hostname.
+      - login  # System login utility.
+      - nala  # Apt frontend with parallel downloads and package history.
+      - ncal  # Display a calendar.
+      - neovim  # Modern text editor.
+      - net-tools  # Basic networking utilities.
+      - openssh-server  # Secure shell server.
+      - tree  # Display directory contents as a tree.
+      - util-linux  # Basic system utilities.
+
+    kubernetes_packages_requiring_apt_repo:
+      - kubeadm  # Kubernetes cluster bootstrapping tool.
+      - kubectl  # Kubernetes command-line tool.
+      - kubelet  # Kubernetes node agent.
+
+  tasks:
+    - name: Ensure packages are installed is at the latest version
+      ansible.builtin.apt:
+        name: "{{ packages_to_install }}"
+        state: present
+
+    - name: Ensure packages are at the latest version
+      ansible.builtin.apt:
+        name: "{{ packages_to_keep_uptodate }}"
+        state: latest
+
+    - name: Setup kubernetes
+      include_tasks: setup_kubernetes_playbook.yaml
+

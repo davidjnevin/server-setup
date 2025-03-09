@@ -1,0 +1,19 @@
+#! /bin/zsh
+
+# # If the process doesn't exists, start one in background
+# run() {
+# 	if ! pgrep $1 ; then
+# 		$@ &
+# 	fi
+# }
+#
+# # Just as the above, but if the process exists, restart it
+# run-or-restart() {
+# 	if ! pgrep $1 ; then
+# 		$@ &
+# 	else
+# 		process-restart $@
+# 	fi
+# }
+
+ansible-navigator run homelab_playbook.yaml --execution-environment-image ghcr.io/ansible-community/community-ee-minimal:latest --mode stdout -i inventory/inventory.ini --enable-prompts --pull-policy missing -k -K
